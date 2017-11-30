@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
         {
             //if permission is not granted ask for permission..
             //RequestCode is used for Callback funtion to check on which permission action was taken
-            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.READ_CONTACTS,Manifest.permission.WRITE_CONTACTS},100);
+            ActivityCompat.requestPermissions(this,new String[] 
+                                              {Manifest.permission.READ_CONTACTS,Manifest.permission.WRITE_CONTACTS},100);
         }
 
 
@@ -68,11 +69,20 @@ public class MainActivity extends AppCompatActivity {
             ContentResolver resolver = getContentResolver();
             ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
             
-            ops.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI).withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null).withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null).build());
+            ops.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
+                    .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+                    .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null).build());
 
-            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI).withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0).withValue(ContactsContract.Data.MIMETYPE,ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE).withValue(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME,contactName.getText().toString()).build());
+            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE,ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME,contactName.getText().toString()).build());
 
-            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI).withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0).withValue(ContactsContract.Data.MIMETYPE,ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE).withValue(ContactsContract.CommonDataKinds.Phone.NUMBER,contactNumber.getText().toString()).withValue(ContactsContract.CommonDataKinds.Phone.TYPE,Phone.TYPE_MOBILE).build());
+            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE,ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER,contactNumber.getText().toString())
+                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,Phone.TYPE_MOBILE).build());
 
             resolver.applyBatch(ContactsContract.AUTHORITY, ops);
             Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_LONG).show();
